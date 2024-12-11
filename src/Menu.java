@@ -19,7 +19,7 @@ public class Menu {
 
         switch (choix) {
             case 1:
-                System.out.println("iojpefjpf");
+                // Pour joueur contre joueur
                 break;
 
             case 2:
