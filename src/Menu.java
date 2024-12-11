@@ -19,7 +19,7 @@ public class Menu {
 
         switch (choix) {
             case 1:
-                // Pour jouer a deux
+                System.out.println("iojpefjpf");
                 break;
 
             case 2:
