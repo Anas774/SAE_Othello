@@ -16,7 +16,6 @@ public class Joueur_VS_Joueur {
     }
 
     public static void afficherPlateau() {
-
         for (int i = 0; i < LIGNES; i++) {
             for (int j = 0; j < COLONNES; j++) {
                 if (plateau[i][j] == 'B') {
@@ -42,7 +41,6 @@ public class Joueur_VS_Joueur {
             }
         }
     }
-
 
 
 
