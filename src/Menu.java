@@ -11,8 +11,8 @@ public class Menu {
         System.out.println("Avoir plus de pions de sa couleur que l’adversaire à la fin de la partie. Celle-ci s’achève lorsque aucun des deux joueurs ne peut plus jouer de coup légal. " + ("\n") +
                 "Cela intervient généralement lorsque les 64 cases sont occupées.");
 
-        System.out.println(("\n") + "1. Jouer contre l'ordinateur.");
-        System.out.println("2. Jouer contre un joueur.");
+        System.out.println(("\n") + "1. Jouer contre un joueur");
+        System.out.println("2. Jouer contre l'ordinateur ");
 
         System.out.println(("\n") + "Choisissez votre mode de jeu (Tapez 1 ou 2) :");
         choix = scanner.nextInt();
