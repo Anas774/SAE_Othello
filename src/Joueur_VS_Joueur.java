@@ -40,7 +40,9 @@ public class Joueur_VS_Joueur {
             placerJeton(ligne,colonne);
 
 
-            /*              Le joueur 'B' gagne
+            /*
+               Le joueur 'B' gagne
+
 
             if () {
 
@@ -48,7 +50,8 @@ public class Joueur_VS_Joueur {
 
             */
 
-            /*              Le joueur 'N' à gagné
+            /*
+               Le joueur 'B' gagne
 
             else if () {
 
@@ -56,21 +59,24 @@ public class Joueur_VS_Joueur {
 
             */
 
-            /*              Le plateau est rempli
+            /*  Plateau remplie
+
+            else if (plateauRemplie()) {
+                afficherPlateau();
+                System.out.println("Au des joueur a gagné");
+                enCours = false;
+            }
+
+            */
+
+            /*
+                Aucun retournement possible
 
             else if () {
 
             }
 
             */
-
-            /*             Aucun retournement possible
-
-            else if () {
-
-            }
-
-             */
 
             joueur = (joueur == 'N') ? 'B' : 'N';
 
@@ -124,7 +130,7 @@ public class Joueur_VS_Joueur {
         plateau[milieuLignes][milieuColonnes] = 'B';
     }
 
-    public static boolean grilleRemplie() {
+    public static boolean plateauRemplie() {
         for (int j = 0; j < COLONNES; j++) {
             if (plateau[0][j] == ' ') {
                 return false;
@@ -134,7 +140,6 @@ public class Joueur_VS_Joueur {
     }
 
     public static boolean peutPrendrePion(char[][] plateau, int x, int y, char joueur) {
-
         if (plateau[x][y] != ' ') {
             return false; // La case doit être vide pour jouer
         }
