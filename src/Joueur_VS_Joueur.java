@@ -51,7 +51,7 @@ public class Joueur_VS_Joueur {
             */
 
             /*
-               Le joueur 'B' gagne
+               Le joueur 'N' gagne
 
             else if () {
 
