@@ -20,54 +20,33 @@ public class Joueur_VS_Joueur {
 
             afficherPlateau();
 
-            System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-7): ");
-            System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-7): ");
-
             int ligne, colonne;
 
             do {
+                System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8): ");
                 ligne = scanner.nextInt() - 1;
-                colonne = scanner.nextInt() - 1;
+                scanner.nextLine();
 
-                if (ligne < 0 || ligne > LIGNES) {
+                System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-7): ");
+                colonne = scanner.nextInt() - 1;
+                scanner.nextLine();
+
+                if (ligne < 0 || ligne >= LIGNES) {
                     System.out.println("Veuillez choisir une ligne entre 1 et 7 : ");
                 }
                 else if (colonne < 0 || colonne >= COLONNES) {
                     System.out.println("Veuillez choisir une colonne entre 1 et 7 : ");
                 }
-            } while (ligne < 0 || ligne >= LIGNES || colonne < 0 || colonne >= COLONNES);
+            } while (!estDansLePlateau(ligne,colonne));
 
             placerJeton(ligne,colonne);
 
 
-            /*
-               Le joueur 'B' gagne
-
-
-            if () {
-
-            }
-
-            */
-
-            /*
-               Le joueur 'N' gagne
-
-            else if () {
-
-            }
-
-            */
-
-            /*  Plateau remplie
-
-            else if (plateauRemplie()) {
+            if (plateauRemplie()) {
                 afficherPlateau();
-                System.out.println("Au des joueur a gagné");
+                System.out.println("La grille est remplie");
                 enCours = false;
             }
-
-            */
 
             /*
                 Aucun retournement possible
@@ -80,6 +59,16 @@ public class Joueur_VS_Joueur {
 
             joueur = (joueur == 'N') ? 'B' : 'N';
 
+        }
+
+        if (compteurBlanc(plateau) > compteurNoir(plateau)) {
+            afficherPlateau();
+            System.out.println("Le joueur " + joueur + " a gagné gg");
+        }
+
+        else if (compteurBlanc(plateau) < compteurNoir(plateau)) {
+            afficherPlateau();
+            System.out.println("Le joueur " + joueur + " a gagné gg");
         }
 
     }
@@ -139,9 +128,9 @@ public class Joueur_VS_Joueur {
         return true;
     }
 
-    public static boolean peutPrendrePion(char[][] plateau, int x, int y, char joueur) {
+    public static char[][] peutPrendrePion(char[][] plateau, int x, int y, char joueur) {
         if (plateau[x][y] != ' ') {
-            return false; // La case doit être vide pour jouer
+            System.out.println("Case invalide, elle est pleine"); // La case doit être vide pour jouer
         }
 
         char adversaire = (joueur == 'N') ? 'B' : 'N';
@@ -164,16 +153,61 @@ public class Joueur_VS_Joueur {
 
             // Si un pion de notre couleur est trouvé après des adversaires
             if (trouveAdversaire && estDansLePlateau(i, j) && plateau[i][j] == joueur) {
-                return true;
+                for (int k = x; k != i; k+=directionsX[d]) {
+                    for (int l = y; l != j; l+=directionsY[d]) {
+                        if (joueur == 'N') {
+                            joueur = 'B';
+                        }
+                        else {
+                            joueur = 'N';
+                        }
+                    }
+                }
             }
         }
 
-        return false;
+        return plateau;
     }
 
     // Vérifier si une position est dans le plateau
     public static boolean estDansLePlateau(int x, int y) {
         return x >= 0 && x < LIGNES && y >= 0 && y < COLONNES;
+    }
+
+    public static int compteurBlanc(char[][] tab) {
+        int cpt = 0;
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab[i].length; j++) {
+                if (joueur == 'B') {
+                    cpt++;
+                }
+            }
+        }
+        return cpt;
+    }
+
+    public static int compteurNoir(char[][] tab) {
+        int cpt = 0;
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab[i].length; j++) {
+                if (joueur == 'N') {
+                    cpt++;
+                }
+            }
+        }
+        return cpt;
+    }
+
+    public static int compteurVide(char[][] tab) {
+        int cpt = 0;
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab[i].length; j++) {
+                if (joueur == ' ') {
+                    cpt++;
+                }
+            }
+        }
+        return cpt;
     }
 
     public static void main(String[] args) {

@@ -19,7 +19,7 @@ public class Menu {
 
         switch (choix) {
             case 1:
-                // Pour joueur contre joueur
+                Joueur_VS_Joueur.boucleDeJeuJoueurVSJoueur();
                 break;
 
             case 2:
