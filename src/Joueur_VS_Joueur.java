@@ -128,9 +128,9 @@ public class Joueur_VS_Joueur {
         return true;
     }
 
-    public static char[][] peutPrendrePion(char[][] plateau, int x, int y, char joueur) {
+    public static char[][] prendreRetournePion(char[][] plateau, int x, int y, char joueur) {
         if (plateau[x][y] != ' ') {
-            System.out.println("Case invalide, elle est pleine"); // La case doit être vide pour jouer
+            System.out.println("Case invalide, elle est pleine");
         }
 
         char adversaire = (joueur == 'N') ? 'B' : 'N';
