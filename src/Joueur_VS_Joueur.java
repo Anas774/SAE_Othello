@@ -1,4 +1,3 @@
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 
 public class Joueur_VS_Joueur {
@@ -27,26 +26,28 @@ public class Joueur_VS_Joueur {
                 ligne = scanner.nextInt() - 1;
                 scanner.nextLine();
 
-                System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-7): ");
+                System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8): ");
                 colonne = scanner.nextInt() - 1;
                 scanner.nextLine();
 
                 if (ligne < 0 || ligne >= LIGNES) {
-                    System.out.println("Veuillez choisir une ligne entre 1 et 7 : ");
+                    System.out.println("Veuillez choisir une ligne entre 1 et 8 : ");
                 }
+
                 else if (colonne < 0 || colonne >= COLONNES) {
-                    System.out.println("Veuillez choisir une colonne entre 1 et 7 : ");
+                    System.out.print("Veuillez choisir une colonne entre 1 et 8 : ");
                 }
-            } while (!estDansLePlateau(ligne,colonne));
+
+            } while (!peutPrendre(plateau,ligne,colonne,joueur));
 
             placerJeton(ligne,colonne);
-
 
             if (plateauRemplie()) {
                 afficherPlateau();
                 System.out.println("La grille est remplie");
                 enCours = false;
             }
+
 
             /*
                 Aucun retournement possible
@@ -120,56 +121,63 @@ public class Joueur_VS_Joueur {
     }
 
     public static boolean plateauRemplie() {
-        for (int j = 0; j < COLONNES; j++) {
-            if (plateau[0][j] == ' ') {
-                return false;
+        for (int i = 0; i < LIGNES; i++) {
+            for (int j = 0; j < COLONNES; j++) {
+                if (plateau[i][j] == ' ') {
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    public static char[][] prendreRetournePion(char[][] plateau, int x, int y, char joueur) {
+    public static boolean peutPrendre(char[][] plateau, int x, int y, char joueur) {
         if (plateau[x][y] != ' ') {
-            System.out.println("Case invalide, elle est pleine");
+
+            System.out.println();
+
+            System.out.println("Case injouable ! ");
+            return false;
         }
 
         char adversaire = (joueur == 'N') ? 'B' : 'N';
+        boolean coupValide = false;
 
-        // Directions : haut, bas, gauche, droite, et diagonales
         int[] directionsX = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] directionsY = {-1, 0, 1, -1, 1, -1, 0, 1};
 
         for (int d = 0; d < 8; d++) {
-            int i = x + directionsX[d];
-            int j = y + directionsY[d];
-            boolean trouveAdversaire = false;
-
-            // Parcourir dans une direction donnée
-            while (estDansLePlateau(i, j) && plateau[i][j] == adversaire) {
-                trouveAdversaire = true;
-                i += directionsX[d];
-                j += directionsY[d];
-            }
-
-            // Si un pion de notre couleur est trouvé après des adversaires
-            if (trouveAdversaire && estDansLePlateau(i, j) && plateau[i][j] == joueur) {
-                for (int k = x; k != i; k+=directionsX[d]) {
-                    for (int l = y; l != j; l+=directionsY[d]) {
-                        if (joueur == 'N') {
-                            joueur = 'B';
-                        }
-                        else {
-                            joueur = 'N';
-                        }
-                    }
-                }
+            if (parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, false)) {
+                coupValide = true;
+                parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, true);
             }
         }
 
-        return plateau;
+        return coupValide;
     }
 
-    // Vérifier si une position est dans le plateau
+
+    public static boolean parcourirDirection(char[][] plateau, int x, int y, int dirX, int dirY, char joueur, char adversaire, boolean retournerPions) {
+        int i = x + dirX;
+        int j = y + dirY;
+        boolean trouveAdversaire = false;
+
+        while (estDansLePlateau(i, j) && plateau[i][j] == adversaire) {
+            trouveAdversaire = true;
+            if (retournerPions) {
+                plateau[i][j] = joueur;
+            }
+            i += dirX;
+            j += dirY;
+        }
+
+        if (trouveAdversaire && estDansLePlateau(i, j) && plateau[i][j] == joueur) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean estDansLePlateau(int x, int y) {
         return x >= 0 && x < LIGNES && y >= 0 && y < COLONNES;
     }
@@ -178,7 +186,7 @@ public class Joueur_VS_Joueur {
         int cpt = 0;
         for (int i = 0; i < tab.length; i++) {
             for (int j = 0; j < tab[i].length; j++) {
-                if (joueur == 'B') {
+                if (tab[i][j] == 'B') {
                     cpt++;
                 }
             }
@@ -190,7 +198,7 @@ public class Joueur_VS_Joueur {
         int cpt = 0;
         for (int i = 0; i < tab.length; i++) {
             for (int j = 0; j < tab[i].length; j++) {
-                if (joueur == 'N') {
+                if (tab[i][j] == 'N') {
                     cpt++;
                 }
             }
@@ -202,7 +210,7 @@ public class Joueur_VS_Joueur {
         int cpt = 0;
         for (int i = 0; i < tab.length; i++) {
             for (int j = 0; j < tab[i].length; j++) {
-                if (joueur == ' ') {
+                if (tab[i][j] == ' ') {
                     cpt++;
                 }
             }

@@ -14,7 +14,7 @@ public class Menu {
         System.out.println(("\n") + "1. Jouer contre un joueur");
         System.out.println("2. Jouer contre l'ordinateur ");
 
-        System.out.println(("\n") + "Choisissez votre mode de jeu (Tapez 1 ou 2) :");
+        System.out.print(("\n") + "Choisissez votre mode de jeu (Tapez 1 ou 2) :" + ("\t"));
         choix = scanner.nextInt();
 
         switch (choix) {
