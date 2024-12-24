@@ -149,6 +149,11 @@ public class Joueur_VS_Joueur {
         for (int d = 0; d < 8; d++) {
             if (parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, false)) {
                 coupValide = true;
+            }
+        }
+
+        if (coupValide) {
+            for (int d = 0; d < 8; d++) {
                 parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, true);
             }
         }
