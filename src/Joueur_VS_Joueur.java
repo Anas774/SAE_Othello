@@ -60,7 +60,7 @@ public class Joueur_VS_Joueur {
 
             */
 
-            joueur = (joueur == 'N') ? 'B' : 'N';
+            joueur = (joueur == 'B') ? 'N' : 'B';
 
         }
 
@@ -163,7 +163,7 @@ public class Joueur_VS_Joueur {
         return coupValide;
     }
 
-
+    // Bug trouvé a voir en groupe
     public static boolean parcourirDirection(char[][] plateau, int x, int y, int dirX, int dirY, char joueur, char adversaire, boolean retournerPions) {
         int i = x + dirX;
         int j = y + dirY;
