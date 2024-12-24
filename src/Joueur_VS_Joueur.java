@@ -142,7 +142,7 @@ public class Joueur_VS_Joueur {
             return false;
         }
 
-        char adversaire = (joueur == 'N') ? 'B' : 'N';
+        char adversaire = (joueur == 'B') ? 'N' : 'B';
         boolean coupValide = false;
 
         int[] directionsX = {-1, -1, -1, 0, 0, 1, 1, 1};
