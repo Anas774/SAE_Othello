@@ -17,6 +17,8 @@ public class Joueur_VS_Joueur {
 
         while (enCours) {
 
+            System.out.println();
+
             afficherPlateau();
 
             int ligne, colonne;
@@ -31,11 +33,11 @@ public class Joueur_VS_Joueur {
                 scanner.nextLine();
 
                 if (ligne < 0 || ligne >= LIGNES) {
-                    System.out.println("Veuillez choisir une ligne entre 1 et 8 : ");
+                    System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !\n");
                 }
 
                 else if (colonne < 0 || colonne >= COLONNES) {
-                    System.out.print("Veuillez choisir une colonne entre 1 et 8 : ");
+                    System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !\n");
                 }
 
             } while (!peutPrendre(plateau,ligne,colonne,joueur));
