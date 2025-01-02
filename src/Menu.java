@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void MenuOthello() {
+    public static void MenuOthello() throws InterruptedException {
         Scanner scanner  = new Scanner(System.in);
 
         int choix = 0;
@@ -23,7 +23,7 @@ public class Menu {
                 break;
 
             case 2:
-                // Pour joueur avec une IA
+                Joueur_VS_IA.boucleDeJeuJoueurVSOrdi();
                 break;
         }
     }
