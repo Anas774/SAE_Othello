@@ -21,59 +21,56 @@ public class Joueur_VS_Joueur {
 
             afficherPlateau();
 
-            int ligne, colonne;
-
-            do {
-                System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8): ");
-                ligne = scanner.nextInt() - 1;
-                scanner.nextLine();
-
-                System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8): ");
-                colonne = scanner.nextInt() - 1;
-                scanner.nextLine();
-
-                if (ligne < 0 || ligne >= LIGNES) {
-                    System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !\n");
-                }
-
-                else if (colonne < 0 || colonne >= COLONNES) {
-                    System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !\n");
-                }
-
-            } while (!peutPrendre(plateau,ligne,colonne,joueur));
-
-            placerJeton(ligne,colonne);
-
-            if (plateauRemplie()) {
-                afficherPlateau();
-                System.out.println("La grille est remplie");
+            if (aucunCoupPossible()) {
+                System.out.println();
+                System.out.println("Aucun coup n'est possible pour Noir et/ou Blanc !");
                 enCours = false;
             }
 
+            if (!peutJouer(joueur)) {
+                System.out.println();
+                System.out.println("Le joueur " + joueur + " ne peut pas jouer et passe son tour !");
+                joueur = (joueur == 'B') ? 'N' : 'B';
 
-            /*
-                Aucun retournement possible
+            } else {
 
-            else if () {
+                int ligne, colonne;
+
+                do {
+                    System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8): ");
+                    ligne = scanner.nextInt() - 1;
+                    scanner.nextLine();
+
+                    System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8): ");
+                    colonne = scanner.nextInt() - 1;
+                    scanner.nextLine();
+
+                    if (ligne < 0 || ligne >= LIGNES) {
+                        System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !\n");
+                    }
+                    else if (colonne < 0 || colonne >= COLONNES) {
+                        System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !\n");
+                    }
+
+                } while (!peutPrendre(plateau, ligne, colonne, joueur));
+
+                placerJeton(ligne, colonne);
+
+                retournerPions(plateau, ligne, colonne, joueur);
+
+                if (plateauRemplie()) {
+                    afficherPlateau();
+                    System.out.println();
+                    System.out.println("La grille est remplie ! ");
+                    enCours = false;
+                }
+
+                joueur = (joueur == 'B') ? 'N' : 'B';
 
             }
-
-            */
-
-            joueur = (joueur == 'B') ? 'N' : 'B';
-
         }
 
-        if (compteurBlanc(plateau) > compteurNoir(plateau)) {
-            afficherPlateau();
-            System.out.println("Le joueur " + joueur + " a gagné gg");
-        }
-
-        else if (compteurBlanc(plateau) < compteurNoir(plateau)) {
-            afficherPlateau();
-            System.out.println("Le joueur " + joueur + " a gagné gg");
-        }
-
+        calculerGagnant();
     }
 
     public static void initialiserPlateau() {
@@ -135,10 +132,7 @@ public class Joueur_VS_Joueur {
 
     public static boolean peutPrendre(char[][] plateau, int x, int y, char joueur) {
         if (plateau[x][y] != ' ') {
-
-            System.out.println();
-
-            System.out.println("Case injouable ! ");
+            System.out.println("\nCase injouable !");
             return false;
         }
 
@@ -154,16 +148,20 @@ public class Joueur_VS_Joueur {
             }
         }
 
-        if (coupValide) {
-            for (int d = 0; d < 8; d++) {
-                parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, true);
-            }
-        }
-
         return coupValide;
     }
 
-    // Bug trouvé a voir en groupe
+    public static void retournerPions(char[][] plateau, int x, int y, char joueur) {
+        char adversaire = (joueur == 'B') ? 'N' : 'B';
+
+        int[] directionsX = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] directionsY = {-1, 0, 1, -1, 1, -1, 0, 1};
+
+        for (int d = 0; d < 8; d++) {
+            parcourirDirection(plateau, x, y, directionsX[d], directionsY[d], joueur, adversaire, true);
+        }
+    }
+
     public static boolean parcourirDirection(char[][] plateau, int x, int y, int dirX, int dirY, char joueur, char adversaire, boolean retournerPions) {
         int i = x + dirX;
         int j = y + dirY;
@@ -171,17 +169,49 @@ public class Joueur_VS_Joueur {
 
         while (estDansLePlateau(i, j) && plateau[i][j] == adversaire) {
             trouveAdversaire = true;
-            if (retournerPions) {
-                plateau[i][j] = joueur;
-            }
             i += dirX;
             j += dirY;
         }
 
         if (trouveAdversaire && estDansLePlateau(i, j) && plateau[i][j] == joueur) {
+
+            if (retournerPions) {
+                i = x + dirX;
+                j = y + dirY;
+
+                while (plateau[i][j] == adversaire) {
+                    plateau[i][j] = joueur;
+                    i += dirX;
+                    j += dirY;
+                }
+            }
             return true;
         }
 
+        return false;
+    }
+
+    public static boolean aucunCoupPossible() {
+        for (int x = 0; x < LIGNES; x++) {
+            for (int y = 0; y < COLONNES; y++) {
+                if (plateau[x][y] == ' ') {
+                    if (peutPrendre(plateau, x, y, 'N') || peutPrendre(plateau, x, y, 'B')) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean peutJouer(char joueur) {
+        for (int x = 0; x < LIGNES; x++) {
+            for (int y = 0; y < COLONNES; y++) {
+                if (plateau[x][y] == ' ' && peutPrendre(plateau, x, y, joueur)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -225,10 +255,42 @@ public class Joueur_VS_Joueur {
         return cpt;
     }
 
-    public static void main(String[] args) {
-        initialiserPlateau();
+    public static void calculerGagnant() {
+        int scoreBlanc = compteurBlanc(plateau);
+        int scoreNoir = compteurNoir(plateau);
+        int casesVides = compteurVide(plateau);
 
-        afficherPlateau();
+        System.out.println("\nScore actuel :");
+        System.out.println();
+        System.out.println("Blanc : " + scoreBlanc);
+        System.out.println("Noir : " + scoreNoir);
+        System.out.println("Cases vides : " + casesVides);
+
+        if (scoreBlanc > scoreNoir) {
+            scoreBlanc += casesVides;
+        }
+        else if (scoreNoir > scoreBlanc) {
+            scoreNoir += casesVides;
+        }
+
+        System.out.println("\nScore final :");
+        System.out.println();
+        System.out.println("Blanc : " + scoreBlanc);
+        System.out.println("Noir : " + scoreNoir);
+
+        if (scoreBlanc > scoreNoir) {
+            System.out.println();
+            System.out.println("Le joueur Blanc a gagné !");
+        }
+        else if (scoreNoir > scoreBlanc) {
+            System.out.println();
+            System.out.println("Le joueur Noir a gagné !");
+        }
+        else {
+            System.out.println();
+            System.out.println("Match nul !");
+        }
     }
+
 
 }
