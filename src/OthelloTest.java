@@ -6,6 +6,7 @@ public class OthelloTest {
     @BeforeEach
     void setUp() {
         Joueur_VS_Joueur.initialiserPlateau();
+        Joueur_VS_IA.initialiserPlateau();
     }
 
     @Test
@@ -63,6 +64,23 @@ public class OthelloTest {
             }
         }
         assertTrue(Joueur_VS_Joueur.plateauRemplie(), "Le plateau n'est pas rempli");
+    }
+
+    @Test
+    void testJouerOrdinateur() throws InterruptedException {
+        // Simule un coup joué par l'ordinateur
+        Joueur_VS_IA.jouerOrdinateur();
+
+        // Vérifie qu'un pion a bien été placé par l'ordinateur
+        boolean coupJoué = false;
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (Joueur_VS_IA.plateau[x][y] == 'N') {
+                    coupJoué = true;
+                }
+            }
+        }
+        assertTrue(coupJoué, "L'ordinateur devrait avoir joué un coup valide");
     }
 
 }
