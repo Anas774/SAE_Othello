@@ -7,7 +7,6 @@ public class Joueur_VS_IA {
     public static final int COLONNES = 8;
     public static char[][] plateau = new char[LIGNES][COLONNES];
     public static char joueur = 'B';
-    public static Random random = new Random();
 
     public static void boucleDeJeuJoueurVSOrdi() throws InterruptedException {
         initialiserPlateau();
@@ -85,7 +84,10 @@ public class Joueur_VS_IA {
                 plateau[i][j] = ' ';
             }
         }
-        QuatrePion();
+        plateau[3][3] = 'B';
+        plateau[3][4] = 'N';
+        plateau[4][3] = 'N';
+        plateau[4][4] = 'B';
     }
 
     public static void afficherPlateau() {
@@ -113,16 +115,6 @@ public class Joueur_VS_IA {
         if (plateau[ligne][colonne] == ' ') {
             plateau[ligne][colonne] = joueur;
         }
-    }
-
-    public static void QuatrePion() {
-        int milieuLignes = plateau.length / 2;
-        int milieuColonnes = plateau[0].length / 2;
-
-        plateau[milieuLignes - 1][milieuColonnes - 1] = 'B';
-        plateau[milieuLignes - 1][milieuColonnes] = 'N';
-        plateau[milieuLignes][milieuColonnes - 1] = 'N';
-        plateau[milieuLignes][milieuColonnes] = 'B';
     }
 
     public static boolean plateauRemplie() {
@@ -317,6 +309,5 @@ public class Joueur_VS_IA {
 
         System.out.println("L'ordinateur ne peut pas jouer et passe son tour !");
     }
-
 
 }

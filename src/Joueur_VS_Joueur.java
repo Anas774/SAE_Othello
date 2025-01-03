@@ -79,7 +79,10 @@ public class Joueur_VS_Joueur {
                 plateau[i][j] = ' ';
             }
         }
-        QuatrePion();
+        plateau[3][3] = 'B';
+        plateau[3][4] = 'N';
+        plateau[4][3] = 'N';
+        plateau[4][4] = 'B';
     }
 
     public static void afficherPlateau() {
@@ -107,16 +110,6 @@ public class Joueur_VS_Joueur {
         if (plateau[ligne][colonne] == ' ') {
             plateau[ligne][colonne] = joueur;
         }
-    }
-
-    public static void QuatrePion() {
-        int milieuLignes = plateau.length / 2;
-        int milieuColonnes = plateau[0].length / 2;
-
-        plateau[milieuLignes - 1][milieuColonnes - 1] = 'B';
-        plateau[milieuLignes - 1][milieuColonnes] = 'N';
-        plateau[milieuLignes][milieuColonnes - 1] = 'N';
-        plateau[milieuLignes][milieuColonnes] = 'B';
     }
 
     public static boolean plateauRemplie() {
