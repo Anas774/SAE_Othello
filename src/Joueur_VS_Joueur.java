@@ -37,19 +37,12 @@ public class Joueur_VS_Joueur {
                 int ligne, colonne;
 
                 do {
-                    System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8): ");
-                    ligne = scanner.nextInt() - 1;
-                    scanner.nextLine();
+                    ligne = entrerEtVerifLigne();
 
-                    System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8): ");
-                    colonne = scanner.nextInt() - 1;
-                    scanner.nextLine();
+                    colonne = entrerEtVerifColonne();
 
-                    if (ligne < 0 || ligne >= LIGNES) {
-                        System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !\n");
-                    }
-                    else if (colonne < 0 || colonne >= COLONNES) {
-                        System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !\n");
+                    if (!peutPrendre(plateau, ligne, colonne, joueur)) {
+                        System.out.println("\nCette case n'est pas valide. Essayez à nouveau !");
                     }
 
                 } while (!peutPrendre(plateau, ligne, colonne, joueur));
@@ -104,6 +97,56 @@ public class Joueur_VS_Joueur {
             System.out.println();
         }
         System.out.println("  1 2 3 4 5 6 7 8");
+    }
+
+    public static int entrerEtVerifLigne() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int ligne;
+
+        do {
+            System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8) : ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Entrée invalide. Veuillez entrer un chiffre entre 1 et 8 : ");
+                scanner.next();
+            }
+            ligne = scanner.nextInt() - 1;
+            scanner.nextLine();
+
+            if (ligne < 0 || ligne >= LIGNES) {
+                System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !");
+            }
+        } while (ligne < 0 || ligne >= LIGNES);
+
+        return ligne;
+
+    }
+
+    public static int entrerEtVerifColonne() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int colonne;
+
+        do {
+            System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8) : ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Entrée invalide. Veuillez entrer un chiffre entre 1 et 8 !");
+                scanner.next();
+            }
+            colonne = scanner.nextInt() - 1;
+            scanner.nextLine();
+
+            if (colonne < 0 || colonne >= COLONNES) {
+                System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !");
+            }
+        } while (colonne < 0 || colonne >= COLONNES);
+
+        return colonne;
+
     }
 
     public static void placerJeton(int ligne, int colonne) {

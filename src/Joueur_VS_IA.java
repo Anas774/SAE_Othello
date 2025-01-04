@@ -41,20 +41,14 @@ public class Joueur_VS_IA {
                     int ligne, colonne;
 
                     do {
-                        System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8): ");
-                        ligne = scanner.nextInt() - 1;
-                        scanner.nextLine();
+                        ligne = entrerEtVerifLigne();
 
-                        System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8): ");
-                        colonne = scanner.nextInt() - 1;
-                        scanner.nextLine();
+                        colonne = entrerEtVerifColonne();
 
-                        if (ligne < 0 || ligne >= LIGNES) {
-                            System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !\n");
+                        if (!peutPrendre(plateau, ligne, colonne, joueur)) {
+                            System.out.println("\nCette case n'est pas valide. Essayez à nouveau !");
                         }
-                        else if (colonne < 0 || colonne >= COLONNES) {
-                            System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !\n");
-                        }
+
                     } while (!peutPrendre(plateau, ligne, colonne, joueur));
 
                     placerJeton(ligne, colonne);
@@ -69,12 +63,11 @@ public class Joueur_VS_IA {
                     break;
                 }
 
-
                 joueur = (joueur == 'B') ? 'N' : 'B';
             }
         }
 
-        calculerGagnant();
+        calculerGagnantVsOrdi();
     }
 
 
@@ -109,6 +102,56 @@ public class Joueur_VS_IA {
             System.out.println();
         }
         System.out.println("  1 2 3 4 5 6 7 8");
+    }
+
+    public static int entrerEtVerifLigne() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int ligne;
+
+        do {
+            System.out.println("\nJoueur " + joueur + ", choisissez une ligne (1-8) : ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Entrée invalide. Veuillez entrer un chiffre entre 1 et 8 : ");
+                scanner.next();
+            }
+            ligne = scanner.nextInt() - 1;
+            scanner.nextLine();
+
+            if (ligne < 0 || ligne >= LIGNES) {
+                System.out.println("\nVeuillez choisir une ligne entre 1 et 8 !");
+            }
+        } while (ligne < 0 || ligne >= LIGNES);
+
+        return ligne;
+
+    }
+
+    public static int entrerEtVerifColonne() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int colonne;
+
+        do {
+            System.out.println("\nJoueur " + joueur + ", choisissez une colonne (1-8) : ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Entrée invalide. Veuillez entrer un chiffre entre 1 et 8 !");
+                scanner.next();
+            }
+            colonne = scanner.nextInt() - 1;
+            scanner.nextLine();
+
+            if (colonne < 0 || colonne >= COLONNES) {
+                System.out.println("\nVeuillez choisir une colonne entre 1 et 8 !");
+            }
+        } while (colonne < 0 || colonne >= COLONNES);
+
+        return colonne;
+
     }
 
     public static void placerJeton(int ligne, int colonne) {
@@ -253,7 +296,7 @@ public class Joueur_VS_IA {
         return cpt;
     }
 
-    public static void calculerGagnant() {
+    public static void calculerGagnantVsOrdi() {
         int scoreBlanc = compteurBlanc(plateau);
         int scoreNoir = compteurNoir(plateau);
         int casesVides = compteurVide(plateau);
@@ -261,7 +304,7 @@ public class Joueur_VS_IA {
         System.out.println("\nScore actuel :");
         System.out.println();
         System.out.println("Blanc : " + scoreBlanc);
-        System.out.println("Noir : " + scoreNoir);
+        System.out.println("Noir (IA) : " + scoreNoir);
         System.out.println("Cases vides : " + casesVides);
 
         if (scoreBlanc > scoreNoir) {
@@ -274,7 +317,7 @@ public class Joueur_VS_IA {
         System.out.println("\nScore final :");
         System.out.println();
         System.out.println("Blanc : " + scoreBlanc);
-        System.out.println("Noir : " + scoreNoir);
+        System.out.println("Noir (IA) : " + scoreNoir);
 
         if (scoreBlanc > scoreNoir) {
             System.out.println();
@@ -282,7 +325,7 @@ public class Joueur_VS_IA {
         }
         else if (scoreNoir > scoreBlanc) {
             System.out.println();
-            System.out.println("Le joueur Noir a gagné !");
+            System.out.println("Le joueur Noir donc l'IA a gagné !");
         }
         else {
             System.out.println();
@@ -299,7 +342,7 @@ public class Joueur_VS_IA {
             for (int y = 0; y < COLONNES; y++) {
                 if (plateau[x][y] == ' ' && peutPrendre(plateau, x, y, joueur)) {
                     System.out.println();
-                    System.out.println("L'ordinateur joue en (" + (x + 1) + ", " + (y + 1) + ")");
+                    System.out.println("\nL'ordinateur joue en (" + (x + 1) + ", " + (y + 1) + ")");
                     placerJeton(x, y);
                     retournerPions(plateau, x, y, joueur);
                     return;
@@ -307,7 +350,7 @@ public class Joueur_VS_IA {
             }
         }
 
-        System.out.println("L'ordinateur ne peut pas jouer et passe son tour !");
+        System.out.println("\nL'ordinateur ne peut pas jouer et passe son tour !");
     }
 
 }
