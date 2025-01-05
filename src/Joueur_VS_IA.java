@@ -9,6 +9,7 @@ public class Joueur_VS_IA {
     public static char joueur = 'B';
 
     public static void boucleDeJeuJoueurVSOrdi() throws InterruptedException {
+
         initialiserPlateau();
 
         Scanner scanner = new Scanner(System.in);
@@ -45,7 +46,7 @@ public class Joueur_VS_IA {
 
                         colonne = entrerEtVerifColonne();
 
-                        if (!peutPrendre(plateau, ligne, colonne, joueur)) {
+                        if (!peutPrendre(plateau, ligne, colonne, joueur) && plateau[ligne][colonne] == ' ') {
                             System.out.println("\nCette case n'est pas valide. Essayez à nouveau !");
                         }
 
@@ -341,7 +342,6 @@ public class Joueur_VS_IA {
         for (int x = 0; x < LIGNES; x++) {
             for (int y = 0; y < COLONNES; y++) {
                 if (plateau[x][y] == ' ' && peutPrendre(plateau, x, y, joueur)) {
-                    System.out.println();
                     System.out.println("\nL'ordinateur joue en (" + (x + 1) + ", " + (y + 1) + ")");
                     placerJeton(x, y);
                     retournerPions(plateau, x, y, joueur);

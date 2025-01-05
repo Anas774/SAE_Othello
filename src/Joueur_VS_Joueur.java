@@ -41,7 +41,7 @@ public class Joueur_VS_Joueur {
 
                     colonne = entrerEtVerifColonne();
 
-                    if (!peutPrendre(plateau, ligne, colonne, joueur)) {
+                    if (!peutPrendre(plateau, ligne, colonne, joueur) && plateau[ligne][colonne] == ' ') {
                         System.out.println("\nCette case n'est pas valide. Essayez à nouveau !");
                     }
 
